@@ -1,5 +1,9 @@
 const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+const { createShortUrl } = require('./short-url');
+
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/:id/stats', (req, res) => {
@@ -18,15 +22,21 @@ app.get('/:id', (req, res) => {
 //         console.log('HELLO')
 //         res.end();
 //     })
+// Create a random short link for arbitrary URLs, e.g., bit.ly/2FhfhXh
+// The same URL should always generate the same random shortlink
+// Allow creating custom short links to arbitrary URLs, e.g., bit.ly/my-custom-link
 app.post('/shorten', (req, res) => {
-        // Create a random short link for arbitrary URLs, e.g., bit.ly/2FhfhXh
-        // The same URL should always generate the same random shortlink
-        //Allow creating custom short links to arbitrary URLs, e.g., bit.ly/my-custom-link
-        
-        // if no long url, throw error
-        // if customShortId is not blank, find the path part
-        // determine if path is valid or if is taken
-    })
+    const { longUrl = '', custom_short_id: customShortId = '' } = req.body;
+    if (!longUrl) {
+        return res
+            .status(400)
+            .json({ message: 'missing long url'});
+    }
+    const obj = createShortUrl(longUrl, customShortId);
+    return res
+        .status(200)
+        .json(obj);
+})
 
 // this as the last route in order to prevent unwanted behaviour
 // app.get('*', (req, res) => {
