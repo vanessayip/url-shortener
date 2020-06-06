@@ -7,10 +7,6 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/:id/stats', (req, res) => {
-    // Provide a route for returning stats in a given short link, including:
-    // When the short link was created
-    // How many times the short link has been visited total
-    // A histogram of number of visits to the short link per day
     const id = req.params.id;
     const stats = getStatsById(id);
     if (!stats) {
@@ -21,8 +17,6 @@ app.get('/:id/stats', (req, res) => {
 })
 
 app.get('/:id', (req, res) => {
-    // Of course, the server itself should handle redirecting short links to the URLs it creates
-    // check if short url exists, if yes, redirect
     const id = req.params.id;
     const longUrl = getLongUrl(id);
     if (!longUrl) {
@@ -33,15 +27,8 @@ app.get('/:id', (req, res) => {
     res.redirect(longUrl);
 })
 
-// app.get('/shorten', (req, res) => {
-//         console.log('HELLO')
-//         res.end();
-//     })
-// Create a random short link for arbitrary URLs, e.g., bit.ly/2FhfhXh
-// The same URL should always generate the same random shortlink
-// Allow creating custom short links to arbitrary URLs, e.g., bit.ly/my-custom-link
 app.post('/shorten', (req, res) => {
-    const { longUrl = '', custom_short_id: customShortId = '' } = req.body;
+    const { long_url: longUrl = '', custom_short_id: customShortId = '' } = req.body;
     if (!longUrl) {
         return res
             .status(400)
