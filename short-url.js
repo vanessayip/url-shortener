@@ -1,10 +1,12 @@
+const moment = require('moment');
+
 const validIdCharacters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 const domain = 'http://localhost:8080';
 const longUrlToShort = {};
 const shortUrlToLongUrl = {};
 const stats = {};
 /* schema for stats object
-key = bitlink
+key = bitlink/id (the 2FhfhXh of bit.ly/2FhfhXh)
 value = {
     longUrl <string>,
     shortUrl <string>,
@@ -69,6 +71,23 @@ const createShortUrl = (longUrl = '', customShortId = '') => {
     return stats[id];
 }
 
+const getLongUrl = (id = '') => {
+    if (!id) {
+        return;
+    }
+    return shortUrlToLongUrl[`${domain}/${id}`];
+}
+
+const incrementVisitCount = (id = '') => {
+    const nowMMDDYYYY = moment().format('MMDDYYYY');
+    stats[id].visitCount++;
+    stats[id].visitLog[nowMMDDYYYY] = stats[id].visitLog[nowMMDDYYYY] || 0;
+    stats[id].visitLog[nowMMDDYYYY]++;
+    return;
+}
+
 module.exports = {
     createShortUrl,
+    getLongUrl,
+    incrementVisitCount,
 };
