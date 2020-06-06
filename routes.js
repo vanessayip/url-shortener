@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const { createShortUrl, getLongUrl, incrementVisitCount } = require('./short-url');
+const { createShortUrl, getLongUrl, incrementVisitCount, getStatsById } = require('./short-url');
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -11,7 +11,14 @@ app.get('/:id/stats', (req, res) => {
     // When the short link was created
     // How many times the short link has been visited total
     // A histogram of number of visits to the short link per day
-    })
+    const id = req.params.id;
+    const stats = getStatsById(id);
+    if (!stats) {
+        return res.status(404)
+        .json({ message: `no stats for ${id}` });
+    }
+    res.json(stats);
+})
 
 app.get('/:id', (req, res) => {
     // Of course, the server itself should handle redirecting short links to the URLs it creates
@@ -19,7 +26,7 @@ app.get('/:id', (req, res) => {
     const id = req.params.id;
     const longUrl = getLongUrl(id);
     if (!longUrl) {
-        res.status(404)
+        return res.status(404)
             .json({ message: `${id} id cannot be found` });
     }
     incrementVisitCount(id);

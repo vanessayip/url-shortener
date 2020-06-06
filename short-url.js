@@ -86,8 +86,16 @@ const incrementVisitCount = (id = '') => {
     return;
 }
 
+const getStatsById = (id = '') => {
+    if (!id) {
+        return;
+    }
+    return stats[id];
+}
+
 module.exports = {
     createShortUrl,
     getLongUrl,
     incrementVisitCount,
+    getStatsById,
 };
