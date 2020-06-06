@@ -54,10 +54,9 @@ app.post('/shorten', (req, res) => {
 })
 
 // this as the last route in order to prevent unwanted behaviour
-// app.get('*', (req, res) => {
-    // res.json({
-//         message: 'bad endpoint'
-//     });
-// });
+app.get('*', (req, res) => {
+    return res.status(400)
+        .json({ message: 'bad endpoint' });
+});
 
 module.exports = app;
