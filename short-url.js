@@ -39,14 +39,12 @@ const createShortUrl = (longUrl = '', customShortId = '') => {
     }
     let shortUrl = longUrlToShort[longUrl];
     let id = shortUrl ? shortUrl.replace(`${domain}/`, '') : '';
-    console.log('id outside while', id)
     if (!id) {
         let isUnique = false;
         while (!isUnique) {
             id = customShortId || generateId();
             let shortUrl = `${domain}/${id}`;
             const existingValue = shortUrlToLongUrl[shortUrl];
-            console.log('exisitingValue', existingValue)
             if (!existingValue) {
                 longUrlToShort[longUrl] = shortUrl;
                 shortUrlToLongUrl[shortUrl] = longUrl;
@@ -65,7 +63,6 @@ const createShortUrl = (longUrl = '', customShortId = '') => {
             }
         }
     }
-    console.log(stats)
     // in a solution with a datastore, return the entire record
     return stats[id];
 }
