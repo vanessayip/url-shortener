@@ -33,7 +33,6 @@ const isValidId = (id) => {
 }
 
 const createShortUrl = (longUrl = '', customShortId = '') => {
-    console.log('longUrl', longUrl);
     // check validness of customshortId
     if (!isValidId(customShortId)) {
         return new Error({ message: 'custom short id contains invalid characters'})
