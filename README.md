@@ -49,7 +49,7 @@ to be stored in Redis. `stats` would be stored in another nosql/sql solution.
 Each `id` created would be a record. The visit log in stats would be stored 
 separately as a log or in a sql solution depending on how reporting will be 
 done and/or how extensive analytics is
-- checking whether or  not the custom link id provided is not built out
+- checking validity of the custom link id provided by the customer is not built out
 - domain is set as constant in this solution, but it is designed such that 
 it can be changed in future development to be a variable, so that it can be set
-by the customer as well since that seems to be a feature supported by bit.ly
+by the customer since that seems to be a feature supported by bit.ly
